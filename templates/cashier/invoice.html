@@ -1,0 +1,140 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load video_tags %}
+
+{% block title %}
+<title>Invoice</title>
+{% endblock %}
+{% block content %}
+<main>
+  <div class="side-nav">
+    <ul class="list-group list-group-flush">
+      <a class="list-group-item" href="chashier.html" data-toggle="tooltip" data-placement="bottom" title="Dashboard"><i class="las la-shapes la-lw"></i>
+        <span>dashboard</span>
+      </a>
+      <a class="list-group-item" href="settings.html" data-toggle="tooltip" data-placement="bottom" title="Settings"><i class="las la-cogs la-lw"></i>
+        <span>settings</span>
+      </a>
+      <hr class="divider" />
+    </ul>
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section"><h5 class="page-title">settings</h5></div>
+      <div class="section profile-section">
+        <div class="card container">
+          <div class="card-header">
+            <h5>Invoice From</h5>
+            <p>
+              This is the invoice to pay for the service
+            </p>
+          </div>
+          <div class="card-body">
+
+            <div class="sub-section col-md-12 col-lg-8">
+
+              <div class="sub-section-body">
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="user-details-form">
+                    <div class="form-row">
+
+                      <div class="form-group col-sm-6">
+                        <label>Appointment ID</label>
+                        <h5>{{ invoice.appointment.id }}</h5>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>Patient date</label>
+                        <h5>{{ invoice.appointment.date }}</h5>
+                      </div>
+                      <div class="form-group col-sm-6 mr-3">
+                        <label>Patient ID</label>
+                        <h5>{{ invoice.appointment.patient.passport_id }}</h5>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>name</label>
+                        <h5>{{ invoice.appointment.patient.first_name }}</h5>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>last name</label>
+                        <h5>{{ invoice.appointment.patient.last_name }}</h5>
+                      </div>
+
+                      <div class="form-group col-sm-6 mr-3">
+                        <label>Doctor ID</label> <h5>{{ invoice.appointment.doctor.passport_id }}</h5>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label> name</label>
+                        <h5>{{ invoice.appointment.doctor.first_name }}</h5>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>last name</label>
+                        <h5>{{ invoice.appointment.doctor.last_name }}</h5>
+                      </div>
+
+                      <div class="form-group col-sm-12">
+                        <label>Chosen services</label>
+                        <table class="table table-responsive-lg">
+                          <thead>
+                            <tr>
+                              <th class="col-6">Service</th>
+                              <th class="col-6">Amount</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for service in invoice.appointment.services.all %}
+                              <tr>
+                                <td>{{ service.name }}</td>
+                                <td>{{ service.cost }}</td>
+                              </tr>
+                            {% endfor %}
+                          </tbody>
+
+                        </table>
+
+                      </div>
+
+                      <div class="dropdowns-wrapper col-sm-12">
+                        <div class="dropdown">
+                            <label for="p-t">Payment Type</label>
+                            <select class="form-control w-50" name="payment_type" id="p-t">
+                              <option value="">----------</option>
+                              <option value="card">Card</option>
+                              <option value="cash">Cash</option>
+                            </select>
+                        </div>
+                      </div>
+
+                    </div>
+                    <table class="mt-3">
+                      <tbody class="table ">
+                        <tr>
+                          <td>Appointment type:</td>
+                          <td>{{ invoice.appointment.type }}</td>
+                        </tr>
+                        <tr>
+                          <td>Total Service Fee:</td>
+                          <td>{% suma invoice.appointment.services.all %}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <input type="hidden" name="invoice" value="{{ invoice.id }}">
+                    {% if invoice.status == 'unpaid' %}
+                    <button class="btn btn-dark-red-f-gr mt-4">
+                      <i class="las la-save"></i>Make Payment
+                    </button>
+                    {% endif %}
+                  </div>
+                  
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</main>
+{% endblock %}

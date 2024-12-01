@@ -1,0 +1,16 @@
+applicantId,mobile_number,emailaddress,home_phone
+1,1234567890,johndoe@example.com,123-456-7890
+2,2345678901,janesmith@example.com,234-567-8901
+3,3456789012,emilyjohnson@example.com,345-678-9012
+4,4567890123,michaelwilliams@example.com,456-789-0123
+5,5678901234,sophiabrown@example.com,567-890-1234
+6,6789012345,emmamiller@example.com,678-901-2345
+7,7890123456,jamesanderson@example.com,789-012-3456
+8,8901234567,williamjones@example.com,890-123-4567
+9,9012345678,oliviadavis@example.com,901-234-5678
+10,0123456789,danielgarcia@example.com,012-345-6789
+11,1122334455,isabellamartinez@example.com,112-233-4455
+12,2233445566,alexanderhernandez@example.com,223-344-5566
+13,3344556677,elizabethyoung@example.com,334-455-6677
+14,4455667788,samanthalee@example.com,445-566-7788
+15,5566778899,matthewlopez@example.com,556-677-8899

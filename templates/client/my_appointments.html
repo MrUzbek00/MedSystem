@@ -1,0 +1,67 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>My appointments</title>
+{% endblock %}
+
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/pages/patients.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="side-nav">
+    <ul class="list-group list-group-flush">
+      {% include 'client/cliend_side_bar.html' %}
+      <hr class="divider" />
+
+    </ul>
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section title-section"><h5>My Appointments</h5></div>
+      <div class="section patients-card-view">
+        <div class="row">
+          {% for app in appointments %}
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-img-top">
+                    <img class="rounded-circle" src="{{ app.doctor.imageURL }}" loading="lazy" />
+                    <a class="view-more" href="{{ app.doctor.meeting }}">join meeting</a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="card-subsection-title">
+                    <h5>{{ app.doctor.get_full_name }}</h5>
+                  </div>
+                  <div class="card-subsection-body">
+                    <label class="text-muted">speciallization</label>
+                    <p>{{ app.doctor.specialization }}</p>
+                    <label class="text-muted">years of experience</label>
+                    <p>{{ app.doctor.experience }}</p>
+                    <label class="text-muted">appointment date</label>
+                    <p>{{ app.date }}</p>
+                    <label class="text-muted">appointment type</label>
+                    <p>{{ app.type }}</p>
+
+                  </div>
+                </div>
+                <div class="card-footer">
+                  {% if app.active != 'active' %}
+                  <a href="{% url 'cl:make_payment' app.get_invoice %}">
+                    <button>
+                      Make payment
+                    </button> 
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

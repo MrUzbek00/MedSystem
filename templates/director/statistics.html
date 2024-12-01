@@ -1,0 +1,203 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>Statistics</title>
+{% endblock %}
+
+{% block content %}
+
+
+    <main>
+      <div class="side-nav"  id="id-month" data-month = {{ month }}>
+        {% if request.user.user_type == 'accauntant' %}
+          {% include 'accauntant/side_bar.html' %}
+        {% else %}
+          {% include 'director/side_bar.html' %}
+        {% endif %}
+      </div>
+      <div class="main-content" id="id-value" data-value = {{ patients_count }}>
+        <div class="container-fluid">
+          <div class="section">
+            <div class="row">
+              <div class="col-md-6"><h5 class="page-title"></h5></div>
+            </div>
+          </div>
+          <div class="section welcome-section">
+            <div class="section-content">
+              <div class="card-deck">
+                <div class="card welcome-content-card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div
+                        class="col-md-6 welcome-text-wrapper align-self-center">
+                        <h5>hello, {{ request.user.username }}</h5>
+                        <p>Welcome to your dashboard</p>
+                      </div>
+                      <div class="col-md-6 welcome-img-wrapper">
+                        <img src="{% static 'images/hello.svg' %}" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card app-stats-card">
+                  <div class="card-body">
+                    <div class="row text-center">
+                      <div class="col-md-4">
+                        <i
+                          class="las la-user-injured la-3x align-self-center"></i>
+                        <p>total patients</p>
+                        <h4><a href>{{ patients|length }}</a></h4>
+                      </div>
+                      <div class="col-md-4">
+                        <i class="las la-user-md la-3x align-self-center"></i>
+                        <p>total doctors</p>
+                        <h4><a href>{{ doctors|length }}</a></h4>
+                      </div>
+                      <div class="col-md-4">
+                        <i
+                          class="las la-clinic-medical la-3x align-self-center"></i>
+                        <p>total departments</p>
+                        <h4><a href>{{ department|length }}</a></h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section card-summaries">
+            <div class="section-content">
+              <div class="card-deck">
+                <div class="card">
+                  <div class="card-header"><h5>recent activities</h5></div>
+                  <div class="card-body">
+                    <canvas id="recent-activity-chart"></canvas>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="id-region" data-region="{{ regions }}"><h5 id="id-count" data-count="{{ patient_count }}">patients addresses</h5></div>
+                  <div class="card-body">
+                    <canvas id="bookings-chart"></canvas>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="id-specializations" data-specializations="{{ specializations }}"><h5 id="id-app_count" data-app_count="{{ app_count }}">Doctors</h5></div>
+                  <div class="card-body">
+                    <canvas id="diseases-chart"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="card-deck">
+                <div class="card">
+                  <div class="card-header"><h5>top services</h5></div>
+                  <div class="card-body">
+                    <ol type="1">
+                      {% for service in services %}
+                        <li>{{ service.name }}</li>
+                      {% endfor %}
+                    </ol>
+                  </div>
+                </div>
+                <div class="card total-counts-summary">
+                  <div class="card-header"><h5>total counts</h5></div>
+                  <div class="card-body">
+                    <div class="row text-center text-capitalize">
+                      <div class="col-md-6">
+                        <i class="las la-users la-2x mb-1"></i>
+                        <h4 class="mb-1">{{ users|length }}</h4>
+                        <p>total users</p>
+                      </div>
+                      <div class="col-md-6">
+                        <i class="las la-user-md la-2x mb-1"></i>
+                        <h4 class="mb-1">{{ doctors|length }}</h4>
+                        <p>total doctors</p>
+                      </div>
+                      <div class="col-md-6">
+                        <i class="las la-user-injured la-2x mb-1"></i>
+                        <h4 class="mb-1">{{ patients|length }}</h4>
+                        <p>total patients</p>
+                      </div>
+                      <div class="col-md-6">
+                        <i class="las la-hospital la-2x mb-1"></i>
+                        <h4 class="mb-1">{{ services|length }}</h4>
+                        <p>total services</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header"><h5>recent patients</h5></div>
+                  <div class="card-body">
+                    <table class="table table-hover table-responsive-md table-borderless" >
+                      <tbody>
+                        {% for patient in patients %}
+                          {% if forloop.counter < 4 %}
+                            <tr>
+                              <td>
+                                <img class="rounded-circle" src="{{ patient.imageURL }}" loading="lazy"/>
+                              </td>
+                              <td>
+                                <p>{{ patient.get_full_name }}</p>
+                              </td>
+                              <td><p class="text-muted">{{ patient.gender }}</p></td>
+                            </tr>
+                          {% endif %}
+                        {% endfor %}  
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer">
+                    <a class="view-more" href="{% url 'fr:patients' %}">more
+                      <i class="las la-angle-right"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="card-deck">
+                <div class="card">
+                  <div class="card-header"><h5>doctors lists</h5></div>
+                  <div class="card-body">
+                    <table class="table table-borderless table-hover table-responsive-md">
+                      <tbody>
+                        {% for doctor in doctors %}
+                          {% if forloop.counter < 5 %}
+                            <tr>
+                              <td>
+                                <img class="rounded-circle" src="{{ doctor.imageURL }}" loading="lazy"/>
+                              </td>
+                              <td>
+                                <p>{{ doctor.get_full_name }}</p>
+                                <small class="text-muted">{{ doctor.specialization }}</small>
+                              </td>
+                              <td><p class="text-muted">{{ doctor.gender }}</p></td>
+                              <td class="text-right"><p>{{ doctor.phone }}</p></td>
+                              <td class="text-right">
+                                <a href="{% url 'doc:v1dashboard' doctor.id %}">
+                                  <button class="btn btn-sm btn-dark-red-f">
+                                    profile
+                                  </button>
+                                </a>
+                              </td>
+                            </tr>
+                          {% endif %}
+                        {% endfor %}  
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-footer">
+                    <a class="view-more" href="{% url 'fr:doctors' %}"
+                      >more<i class="las la-angle-right"></i
+                    ></a>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+      </div>
+    </main>
+{% endblock %}

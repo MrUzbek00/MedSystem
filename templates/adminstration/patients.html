@@ -1,0 +1,71 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>Patients</title>
+{% endblock %}
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/pages/settings.css' %}" />
+<link rel="stylesheet" href="{% static 'css/pages/patients.css' %}" />
+{% endblock %}
+{% block content %}
+<main>
+  <div class="side-nav">
+    <ul class="list-group list-group-flush">
+      {% if request.user.user_type == 'director' %}
+        {% include 'director/side_bar.html' %}
+      {% else %}
+        {% include 'adminstration/admin_side_bar.html' %}
+      {% endif %}
+    </ul>
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section title-section"><h5 class="page-title"></h5>
+      </div>
+      <div class="section filters-section">
+        <div class="dropdowns-wrapper">
+
+        </div>
+        <div class="buttons-wrapper ml-auto">
+          <a href="{% url 'fr:add_patient' %}">
+            <button class="btn btn-dark-red-f-gr">
+              <i class="las la-plus-circle"></i>add a new patient
+            </button>
+          </a>
+        </div>
+      </div>
+      <div class="section patients-card-view">
+        <div class="row">
+          {% for patient in patients %}
+          <div class="col-md-3">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-img-top">
+                  <img class="rounded-circle" src="{{ patient.imageURL }}"
+                    loading="lazy" />
+                  <a class="view-more" href="details.html">view profile</a>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="card-subsection-title">
+                  <h5>{{ patient.get_full_name }}</h5>
+                  <p class="text-muted">passport_id: {{ patient.passport_id }}</p>
+                </div>
+                <div class="card-subsection-body">
+                  <label class="text-muted">age</label>
+                  <p>{{ patient.birth_date.year }}</p>
+                  <label class="text-muted">date of birth</label>
+                  <p>{{ patient.birth_date }}</p>
+                </div>
+              </div>
+              <div class="card-footer"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+{% endblock %}

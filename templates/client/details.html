@@ -1,0 +1,160 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>Patient Details</title>
+{% endblock %}
+
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/pages/details.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="side-nav">
+    <ul class="list-group list-group-flush">
+      {% include 'client/cliend_side_bar.html' %}
+      <hr class="divider" />
+
+    </ul>
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section row title-section">
+        <div class="col-md-8">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="patients.html">patients</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                {{ request.user.get_full_name }}
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-md-4">
+          <a href="{% url 'cl:update_profile' %}">
+            <button class="btn btn-dark-red-f-gr">
+              <i class="las la-edit"></i>Update profile
+            </button>
+          </a> 
+        </div>
+      </div>
+      <div class="section patient-details-section">
+        {% include 'partials/_flash_messages.html' %}
+        <div class="row">
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="mini-card text-center">
+                        <div class="card-header">
+                          <img class="rounded-circle" src="{{ request.user.imageURL }}" loading="lazy" />
+                        </div>
+                        <div class="card-body">
+                          <h4>{{ request.user.get_full_name }}</h4>
+                          <small>{{ request.user.passport_id }}</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-8 patients-details-card-wrapper">
+                      <div class="mini-card">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>gender</label><input  readonly="readonly" class="form-control" type="text" value="{{ request.user.gender }}"/>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>date of birth</label>
+                                <input class="form-control" readonly="readonly" type="text" value="{{ request.user.birth_date }}" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>phone number</label>
+                                <input class="form-control" readonly="readonly" value="{{ request.user.phone }}" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Region</label>
+                                <input class="form-control" readonly="readonly" value="{{ request.user.region }}" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>city</label>
+                                <input class="form-control" readonly="readonly" value="{{ request.user.city }}" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Home address</label>
+                                <input class="form-control" readonly="readonly" value="{{ request.user.address }}" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h4>Notes</h4>
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="upcoming-appointments" role="tabpanel" aria-labelledby="upcoming-appointments-tab">
+                        {% for note in notes %}
+                          <div class="media">
+                            <div class="align-self-center">
+                              <p>{{ note.date|date:"D" }}</p>
+                              <h3>{{ note.date|date:"d" }}</h3>
+                              <p>{{ note.date|date:"Y" }}</p>
+                            </div>
+                            <div class="media-body">
+                              <div class="row">
+                                <label class="label-green-bl w-25">{{ note.doctor.get_full_name }}</label>
+                                <p class="w-100">{{ note.text }}</p>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card files-card">
+              <div class="card-header">
+                <h5>files</h5>
+              </div>
+              <div class="card-body">
+                {% for file in files %}
+                  <div class="list-group list-group-flush">
+                    <a class="list-group-item" href="#">
+                      <i class="las la-file-excel"></i>
+                        {{ file }}
+                      <div class="float-right">
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

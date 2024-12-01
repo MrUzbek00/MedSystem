@@ -1,0 +1,74 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>Add Department</title>
+{% endblock %}
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/pages/settings.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="side-nav shadow-sm">
+    <ul class="list-group list-group-flush">
+      {% include 'adminstration/admin_side_bar.html' %}
+    </ul>
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section"><h5>Add department</h5></div>
+      <div class="section profile-section">
+        {% include 'partials/_flash_messages.html' %}
+        <form action="{% url 'ut:add_department' %}" method="post">
+          {% csrf_token %}
+          <div class="card container">
+            <div class="card-header">
+              <h5>Depart Details</h5>
+              <p>
+                This section contains department information like name, doctors,
+                head departments etc
+              </p>
+            </div>
+            <div class="card-body">
+  
+              <div class="sub-section col-md-12 col-lg-8">
+  
+                <div class="sub-section-body">
+                  <div class="user-details-form">
+                    <div class="form-row">
+                      <div class="form-group col-sm-6">
+                        <label>department name</label>
+                        <input class="form-control" name="name" />
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>Head Docotor</label>
+                        <select class="form-control" name="head">
+                          <option value="">--------------</option>
+                          {% for doctor in doctors %}
+                            <option value="{{ doctor.id }}">{{ doctor.get_full_name }} </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label>Docotors</label>
+                        <select class="form-control" name="doctors" multiple>
+                          {% for doctor in doctors %}
+                            <option value="{{ doctor.id }}">{{ doctor.get_full_name }} </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <button class="btn btn-dark-red-f-gr mt-4">
+                      <i class="las la-save"></i>Create
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

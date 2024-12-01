@@ -1,0 +1,94 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}
+<title>Register Patient to ward</title>
+{% endblock %}
+
+
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/pages/settings.css' %}" />
+<link rel="stylesheet" href="{% static 'css/pages/patients.css' %}" />
+{% endblock %}
+
+
+
+{% block content %}
+<main>
+  <div class="side-nav shadow-sm">
+    <ul class="list-group list-group-flush">
+      {% include 'adminstration/admin_side_bar.html' %}
+    </ul>
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section"><h5>Register to a ward </h5></div>
+      <div class="section profile-section">
+        <div class="card container">
+          <div class="card-header">
+            <h5>Ward Details</h5>
+            <p>
+              This section is used to register a patient to a ward
+            </p>
+          </div>
+          <div class="card-body">
+
+            <div class="sub-section col-md-12 col-lg-8">
+
+              <div class="sub-section-body">
+                {% include 'partials/_flash_messages.html' %}
+                <form action="{% url 'ut:register_patient' %}" method="post">
+                  {% csrf_token %}
+                  <div class="user-details-form ">
+                    <div class="form-row">
+                      <div style="padding-left: 5px;" class="col-6">
+                        
+                        <label>Ward</label>
+                        <select  class="form-control" name="ward" required>
+                          <option value="">-------------</option>
+                          {% for ward in wards %}
+                            <option value="{{ ward.id }}">{{ ward }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      
+                      <div class="form-group col-6">
+                        <label>Patient ID</label>
+                        <input class="form-control col-12" name="patient_id" list="patients" required/>
+                        <datalist id="patients">
+                          {% for patient in patients %}
+                            <option>{{ patient.passport_id }}</option>
+                          {% endfor %}
+                        </datalist>
+                      </div>
+  
+                      <div class="form-group col-6">
+                        <label>Start date</label>
+                        <input type="date" name="start_date" class="form-control p-1 btn-dark-red-o" required>
+                      </div>
+  
+                      <div class="form-group col-6">
+                        <label>End date</label>
+                        <input type="date" name="end_date" class="form-control p-1 btn-dark-red-o" required>
+                      </div>
+  
+                    </div>
+                    <button class="btn btn-dark-red-f-gr mt-4">
+                      <i class="las la-save"></i>
+                      Register
+                    </button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,16 @@
+applicantId,Postal_address,is_uk_address,home_address,country_birth,first_entry_date,nationality,permanent_residence,residential_category
+1,123 Main St,TRUE,123 Main St,USA,2019-09-01,USA,123 Main St,Resident
+2,456 Oak Ave,TRUE,456 Oak Ave,USA,2020-01-15,USA,456 Oak Ave,Resident
+3,789 Elm St,TRUE,789 Elm St,Canada,2018-09-01,Canada,789 Elm St,Resident
+4,101 Pine Rd,TRUE,101 Pine Rd,USA,2021-01-15,USA,101 Pine Rd,Resident
+5,202 Maple Ln,TRUE,202 Maple Ln,UK,2022-09-01,UK,202 Maple Ln,Resident
+6,303 Cedar St,TRUE,303 Cedar St,USA,2023-09-01,USA,303 Cedar St,Resident
+7,404 Birch Ave,TRUE,404 Birch Ave,USA,2024-01-15,USA,404 Birch Ave,Resident
+8,505 Elm St,TRUE,505 Elm St,Canada,2022-09-01,Canada,505 Elm St,Resident
+9,606 Oak Ave,TRUE,606 Oak Ave,USA,2021-01-15,USA,606 Oak Ave,Resident
+10,707 Maple Ln,TRUE,707 Maple Ln,UK,2020-09-01,UK,707 Maple Ln,Resident
+11,808 Pine Rd,TRUE,808 Pine Rd,USA,2019-09-01,USA,808 Pine Rd,Resident
+12,909 Cedar St,TRUE,909 Cedar St,USA,2018-01-15,USA,909 Cedar St,Resident
+13,1010 Birch Ave,TRUE,1010 Birch Ave,Canada,2017-09-01,Canada,1010 Birch Ave,Resident
+14,1111 Elm St,TRUE,1111 Elm St,USA,2016-01-15,USA,1111 Elm St,Resident
+15,1212 Oak Ave,TRUE,1212 Oak Ave,UK,2015-09-01,UK,1212 Oak Ave,Resident

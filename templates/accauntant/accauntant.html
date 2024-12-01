@@ -1,0 +1,164 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>Accauntant</title>
+{% endblock %}
+
+{% load video_tags %}
+
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/pages/patients.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <main>
+      <div class="side-nav">
+        {% include 'accauntant/side_bar.html' %}
+      </div>
+      <div class="main-content">
+        <div class="container-fluid">
+          <div class="section">
+            <div class="row">
+              <div class="col-md-6"><h5 class="page-title"></h5></div>
+            </div>
+          </div>
+          <div class="section welcome-section">
+            <div class="section-content">
+              <div class="card-deck">
+                <div class="card welcome-content-card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6 welcome-text-wrapper align-self-center">
+                        <h5>hello {{ request.user.get_full_name }}</h5>
+                        <p>Welcome to your dashboard</p>
+                      </div>
+                      <div class="col-md-6 welcome-img-wrapper" >
+                        <img style="max-height: 150px; object-fit: contain;" src="{{ request.user.imageURL }}" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card app-stats-card">
+                  <div class="card-body">
+                    <div class="row text-center">
+                      <div class="col-md-4">
+                        <i class="las la-user-injured la-3x align-self-center"></i>
+                        <p>total patients</p>
+                        <h4><a href="">{{ patients }}</a></h4>
+                      </div>
+                      <div class="col-md-4">
+                        <i class="las la-user-md la-3x align-self-center"></i>
+                        <p>total doctors</p>
+                        <h4><a href="">{{ doctors }}</a></h4>
+                      </div>
+                      <div class="col-md-4">
+                        <i class="las la-clinic-medical la-3x align-self-center"></i>
+                        <p>total services</p>
+                        <h4><a href="">{{ serivces }}</a></h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="section title-section"><h5 >Invoices</h5>
+          </div>
+          <div class="section filters-section">
+            <div class="dropdowns-wrapper">
+              <div class="dropdown">
+                <a class="btn btn-dark-red-o dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >filter status</a>
+                <div class="dropdown-menu shadow-lg" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" href="/accauntant/dashboard/?satus=paid">paid </a>
+                  <a class="dropdown-item" href="/accauntant/dashboard/?satus=unpaid">unpaid</a>
+                </div>
+              </div>
+              <div class="dropdown">
+                <a class="btn btn-dark-red-o dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter by department</a>
+                <div class="dropdown-menu shadow-lg" aria-labelledby="dropdownMenuLink">
+                  {% for department in departments %}
+                    <a class="dropdown-item" href="/accauntant/dashboard/?department={{ department.name }}">{{ department.name }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div>
+              <form method="get">
+                <input type="date" name="date" class="p-1 btn-dark-red-o" >
+                <input type="submit" class="p-1 px-3 btn-dark-red-o" value="Filter">
+              </form>
+            </div>
+
+            <div class="ml-5">
+              <form action="{% url 'ut:generate_report' %}" method="post">
+                {% csrf_token %}
+                <input type="date" name="date1" class="p-1 btn-dark-red-o" >
+                <input type="date" name="date2" class="p-1 btn-dark-red-o" >
+                <input type="submit" class="btn btn-dark-red-f-gr" value="Generate Report by date">
+              </form>
+            </div>
+            
+            <a href="{% url 'ca:generate_report' %}">
+              <button class="btn btn-dark-red-f-gr">
+                <i class="las la-plus-circle"></i>generate report
+              </button>
+            </a>
+          </div>
+          
+          <div class="section patients-table-view">
+            <table class="table table-hover table-responsive-lg ">
+              <thead>
+                <tr>
+                  <th>Invoice ID</th>
+                  <th>patient ID</th>
+                  <th>patient name</th>
+                  <th>doctor name</th>
+                  <th>date</th>
+                  <th>amount</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for invoice in invoices %}
+                  {% if invoice.status == 'paid' %}
+                    <tr class="bg-success">
+                  {% else %}
+                    <tr class="bg-danger">
+                  {% endif %}
+                    <td>{{ invoice.id }}</td>
+                    <td>{{ invoice.appointment.patient.id }}</td>
+                    <td>
+                      <img class="rounded-circle" src="{{ invoice.appointment.patient.imageURL }}" loading="lazy"/>
+                      <span class="ml-2">{{ invoice.appointment.patient.get_full_name }}</span>
+                    </td>
+                    <td>
+                      <img class="rounded-circle mr-1" src="{{ invoice.appointment.doctor.imageURL }}" loading="lazy"/>
+                      <span class="ml-2">{{ invoice.appointment.doctor.get_full_name }}</span>
+                    </td>
+                    <td>{{ invoice.created_date }}</td>
+                    <td>{% suma invoice.appointment.services.all %}</td>
+                    <td>
+                      <a class="view-more btn btn-sm btn-dark-red-f" href="{% url 'ac:passed_invoice' invoice.id %}" >view invoice</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+        <footer>
+          <div class="page-footer text-center">
+            <div class="fixed-bottom shadow-sm">
+              <a href="https://covid19.who.int" target="_blank"
+                ><img src="../SiteAssets/images/covid-19.svg" /><span
+                  >view COVID-19 info</span
+                ></a
+              >
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
+{% endblock %}

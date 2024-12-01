@@ -1,0 +1,263 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>Patient Details</title>
+{% endblock %}
+
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/pages/details.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="side-nav">
+    <ul class="list-group list-group-flush">
+      {% include 'doctor/doctor_side_bar.html' %}
+      <hr class="divider" />
+
+    </ul>
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section row title-section">
+        <div class="col-md-8">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="patients.html">patients</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                john doe
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <div class="section patient-details-section">
+        {% include 'partials/_flash_messages.html' %}
+        <div class="row">
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="mini-card text-center">
+                        <div class="card-header">
+                          <img class="rounded-circle"
+                            src="{{ patient.imageURL }}" loading="lazy" />
+                        </div>
+                        <div class="card-body">
+                          <h4>{{ patient.get_full_name }}</h4>
+                          <small>{{ patient.passport_id }}</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-8 patients-details-card-wrapper">
+                      <div class="mini-card">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>gender</label><input class="form-control"
+                                  readonly="readonly"
+                                  value="{{ patient.gender }}" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>date of birth</label>
+                                <input class="form-control" readonly="readonly"
+                                  value="{{ patient.birth_date }}" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>phone number</label>
+                                <input class="form-control" readonly="readonly"
+                                  value="{{ patient.phone }}" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Region</label>
+                                <input class="form-control" readonly="readonly"
+                                  value="{{ patient.region }}" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>city</label>
+                                <input class="form-control" readonly="readonly"
+                                  value="{{ patient.city }}" />
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label>Home address</label>
+                                <input class="form-control" readonly="readonly"
+                                  value="{{ patient.address }}" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-body">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <a class="nav-link active"
+                          id="upcoming-appointments-tab" data-toggle="tab"
+                          href="#upcoming-appointments" role="tab"
+                          aria-controls="upcoming-appointments"
+                          aria-selected="true">upcoming appointments</a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="past-appointments-tab"
+                          data-toggle="tab" href="#past-appointments" role="tab"
+                          aria-controls="past-appointments"
+                          aria-selected="false">past appointments</a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="medical-records-tab"
+                          data-toggle="tab" href="#medical-records" role="tab"
+                          aria-controls="medical-records"
+                          aria-selected="false">medical records</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active"
+                        id="upcoming-appointments" role="tabpanel"
+                        aria-labelledby="upcoming-appointments-tab">
+                        {% for app in upcoming_appointments %}
+                        <div class="media">
+                          <div class="align-self-center">
+                            <p>{{ app.date|date:"D" }}</p>
+                            <h3>{{ app.date|date:"d" }}</h3>
+                            <p>{{ app.date|date:"Y" }}</p>
+                          </div>
+                          <div class="media-body">
+                            {% for ser in app.services.all %}
+                            <div class="row">
+                              <label class="label-green-bl">{{ ser.name }}</label>
+
+                              <p>{{ app.doctor.get_full_name }}</p>
+                              <p><i class="las la-tv"></i>{{ app.type }}</p>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
+                      <div class="tab-pane fade" id="past-appointments"
+                        role="tabpanel" aria-labelledby="past-appointments-tab">
+                        {% for app in past_appointments %}
+                        <div class="media">
+                          <div class="align-self-center">
+                            <p>{{ app.date|date:"D" }}</p>
+                            <h3>{{ app.date|date:"d" }}</h3>
+                            <p>{{ app.date|date:"Y" }}</p>
+                          </div>
+                          <div class="media-body">
+                            {% for ser in app.services.all %}
+                            <div class="row">
+                              <!-- <label class="label-green-bl">{{ ser.name }}</label> -->
+                              <p>{{ app.doctor.get_full_name }}</p>
+                              <p><i class="las la-tv"></i>{{ app.type }}</p>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
+                      <div class="tab-pane fade" id="medical-records"
+                        role="tabpanel" aria-labelledby="medical-records-tab">
+                        {% for note in notes %}
+                        <div class="media">
+                          <div class="align-self-center">
+                            <p>{{ note.date|date:"D" }}</p>
+                            <h3>{{ note.date|date:"d" }}</h3>
+                            <p>{{ note.date|date:"Y" }}</p>
+                          </div>
+                          <div class="media-body">
+                            <div class="row">
+                              <label class="label-green-bl w-25">{{ note.doctor.get_full_name }}</label>
+                              <p class="w-100">{{ note.note }}</p>
+                            </div>
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card notes-card">
+              <div class="card-header">
+                <h5>
+                  notes
+                </h5>
+              </div>
+              <div class="card-body">
+                <form action="{% url 'ut:add_note' %}" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="doctor"
+                    value="{{ request.user.id }}">
+                  <input type="hidden" name="patient" value="{{ patient.id }}">
+                  <textarea
+                    name='note'
+                    class="form-control"
+                    placeholder="you can write patient notes over here"
+                    rows="6">
+                  </textarea>
+                  <button class="btn btn-dark-red-f float-right btn-sm">
+                    <i class="las la-save"></i>save note
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div class="card files-card">
+              <div class="card-header">
+                <h5> files </h5>
+                  <form class="d-flex align-items-center justify-content-end" action="{% url 'ut:add_file' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" class="form-control-file w-50" name="file">
+                    <input type="hidden" value="{{ patient.id }}" name="patient">
+                    <button class="btn btn-dark-red-f btn-sm">
+                      <i class="las la-file-medical"></i>add file
+                    </button>
+                  </form>
+                
+              </div>
+              <div class="card-body">
+                <div class="list-group list-group-flush">
+
+                  {% for file in files %}
+                    <div class="list-group list-group-flush">
+                      <a class="list-group-item" href="#">
+                        <i class="las la-file-excel"></i>
+                          {{ file.file }}
+                        <div class="float-right">
+                        </div>
+                      </a>
+                    </div>
+                  {% endfor %}
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

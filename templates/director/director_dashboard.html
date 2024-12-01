@@ -1,0 +1,133 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>Director</title>
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="side-nav">
+    {% include 'director/side_bar.html' %}
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section">
+        <div class="row">
+          <div class="col-md-6"><h5 >Director</h5></div>
+        </div>
+      </div>
+      <div class="section welcome-section">
+        <div class="section-content">
+          <div class="card-deck">
+            <div class="card welcome-content-card">
+              <div class="card-body">
+                <div class="row">
+                  <div
+                    class="col-md-6 welcome-text-wrapper align-self-center">
+                    <h5>hello, {{ request.user.username }}</h5>
+                    <p>Welcome to your dashboard</p>
+                  </div>
+                  <div class="col-md-6 welcome-img-wrapper">
+                    <img src="{% static 'images/hello.svg' %}" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card app-stats-card">
+              <div class="card-body">
+                <div class="row text-center">
+                  <div class="col-md-4">
+                    <i
+                      class="las la-user-injured la-3x align-self-center"></i>
+                    <p>total patients</p>
+                    <h4><a href>{{ patients|length }}</a></h4>
+                  </div>
+                  <div class="col-md-4">
+                    <i class="las la-user-md la-3x align-self-center"></i>
+                    <p>total doctors</p>
+                    <h4><a href>{{ doctors|length }}</a></h4>
+                  </div>
+                  <div class="col-md-4">
+                    <i
+                      class="las la-clinic-medical la-3x align-self-center"></i>
+                    <p>total departments</p>
+                    <h4><a href>{{ department|length }}</a></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section card-summaries">
+        <div class="section-content">
+          <div class="card-deck">
+            <div class="card">
+              <div class="card-header"><h5>doctors lists</h5></div>
+              <div class="card-body">
+                <table
+                  class="table table-borderless table-hover table-responsive-md">
+                  <tbody>
+                    {% for doctor in doctors %}
+                      <tr>
+                        <td>
+                          <img style="width: 50px; height: 50px;" class="rounded-circle" src="{{ doctor.imageURL }}" loading="lazy" />
+                        </td>
+                        <td>
+                          <p>{{ doctor.get_full_name }}</p>
+                          <small class="text-muted">{{ doctor.specialization }}</small>
+                        </td>
+                        <td><p class="text-muted">{{ doctor.gender }}</p></td>
+                        <td class="text-right"><p>{{ doctor.phone }}</p></td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <div class="card-footer">
+                <a class="view-more" href="{% url 'fr:doctors' %}">more<i
+                    class="las la-angle-right"></i></a>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h5>upcoming appointments</h5></div>
+              <div class="card-body">
+                <table
+                  class="table table-borderless table-hover table-responsive-md">
+                  <tbody>
+                    {% for app in appointments %}
+                    <tr>
+                      <td>
+                        <img class="rounded-circle" src="{{ app.doctor.imageURL }}" loading="lazy" />
+                      </td>
+                      <td>
+                        <p>{{ app.doctor.get_full_name }}</p>
+                        <small class="text-muted">{{ app.doctor.specialization }}</small>
+                      </td>
+                      <td class="text-right"><p>{{ app.date }}</p></td>
+                      <td class="text-right">
+                        <!-- <button class="btn">
+                          <i class="las la-check-circle"></i>
+                        </button> -->
+                        <button class="btn">
+                          <i class="las la-times-circle"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <div class="card-footer">
+                <a class="view-more"
+                  href="{% url 'fr:appaintments' %}">more<i
+                    class="las la-angle-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

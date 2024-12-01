@@ -1,0 +1,102 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}
+<title>Chashier</title>
+{% endblock %}
+
+{% load video_tags %}
+
+{% block static %}
+<link rel="stylesheet" href="{% static 'css/pages/patients.css' %}" />
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="side-nav">
+    {% include 'cashier/cashier_side_bar.html' %}
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section">
+        <div class="row">
+          <div class="col-md-6"><h5 class="page-title"></h5></div>
+        </div>
+      </div>
+      <div class="section title-section"><h5>Invoicess</h5>
+      </div>
+      <div class="section filters-section">
+        <div class="dropdowns-wrapper">
+          <div class="dropdown">
+            <a class="btn btn-dark-red-o dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">filter status</a>
+            <div class="dropdown-menu shadow-lg" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="/cashier/dashboard/?status=paid">paid</a>
+              <a class="dropdown-item" href="/cashier/dashboard/?status=unpaid">unpaid</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a class="btn btn-dark-red-o dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">sort by department</a>
+            <div class="dropdown-menu shadow-lg" aria-labelledby="dropdownMenuLink">
+              {% for department in departments %}
+                <a class="dropdown-item" href="/cashier/dashboard/?department={{ department.id }}">{{ department.name }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons-wrapper ml-auto">
+          <form action="{% url 'ut:generate_report' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-dark-red-f-gr" value="Generate Report">
+          </form>
+
+        </div>
+      </div>
+
+      <div class="section patients-table-view">
+        <table class="table table-hover table-responsive-lg">
+          <thead>
+            <tr>
+              <th>appo. ID</th>
+              <th>patient ID</th>
+              <th>patient name</th>
+              <th>doctor name</th>
+              <th>status</th>
+              <th>amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for invoice in invoices %}
+              <tr
+                {% if invoice.status == 'unpaid' %}
+                  class="bg-danger"
+                {% else %}
+                  class="bg-success"
+                {% endif %}
+               >
+                <td>{{ invoice.appointment.id }}</td>
+                <td>{{ invoice.appointment.patient.passport_id }}</td>
+                <td>
+                  <img class="rounded-circle" src="{{ invoice.appointment.patient.imageURL }}" loading="lazy" /><span class="ml-2">{{ invoice.appointment.patient.get_full_name }}</span>
+                </td>
+                <td>
+                  <img class="rounded-circle mr-1" src="{{ invoice.appointment.doctor.imageURL }}" loading="lazy" /><span class="ml-2">{{ invoice.appointment.doctor.get_full_name }}</span>
+                </td>
+                <td>{{ invoice.status }}</td>
+                <td>{% suma invoice.appointment.services.all %}</td>
+
+                <td>
+                  <a
+                    class="view-more btn btn-sm btn-dark-red-f"
+                    href="{% url 'ca:passed_invoice' invoice.id %}">view invoice</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>Doctor</title>
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="side-nav">
+    {% if request.user.user_type == 'director' %}
+      {% include 'director/side_bar.html' %}
+    {% else %}
+      {% include 'doctor/doctor_side_bar.html' %}
+    {% endif %}
+
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section">
+        <div class="row">
+          <div class="col-md-6"><h5>Doctor dashboard</h5></div>
+        </div>
+      </div>
+
+      <div class="section card-summaries">
+        <div class="section-content">
+          <div class="card-deck">
+
+            <div class="card">
+              <div class="card-header"><h5>upcoming appointments</h5></div>
+              <div class="card-body">
+                <table
+                  class="table table-borderless table-hover table-responsive-md">
+                  <thead>
+                    <tr>
+                      <th>appo. ID</th>
+                      <th>patient ID</th>
+                      <th>patient name</th>
+                      <th>doctor name</th>
+                      <th>doctor id</th>
+                      <th>appo. date</th>
+                      <th>type</th>
+                      <th>details</th>
+                      <th>end</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for app in appointments %}
+                      <tr>
+                        <td>{{ app.id }}</td>
+                        <td>{{ app.patient.passport_id }}</td>
+                        <td>
+                          <img class="rounded-circle" src="{{ app.patient.imageURL }}" loading="lazy" />
+                          <span class="ml-2">{{ app.patient.get_full_name }}</span>
+                        </td>
+                        <td>
+                          <img class="rounded-circle mr-1" src="{{ app.doctor.imageURL }}" loading="lazy" />
+                          <span class="ml-2">{{ app.doctor.get_full_name }}</span>
+                        </td>
+                        <td>{{ app.doctor.passport_id }}</td>
+                        <td>{{ app.date }}</td>
+                          {% if not app.status %}
+                            {% if app.type == 'online' %}
+                              <td><a class="view-more btn btn-sm btn-dark-red-f" href="{{ request.user.meeting }}">Start meeting</a></td>
+                            {% else %}
+                              <td>{{ app.type }}</td>
+                            {% endif %}
+                          {% else %}
+                              <td>Ended</td>
+                          {% endif %}
+                        <td>
+                          <a
+                            class="view-more btn btn-sm btn-dark-red-f"
+                            href="{% url 'doc:patient_details' app.patient.id %}">view profile</a>
+                        </td>
+
+                          {% if not app.status %}
+                            <td>
+                              {% if head %}
+                                <a class="view-more btn btn-sm btn-dark-red-f" href="/doctor/appointments/?id={{ app.id }}">end meeting</a>
+                              {% else %}
+                                <a class="view-more btn btn-sm btn-dark-red-f" href="/doctor/dashboard/?id={{ app.id }}">end meeting</a>
+                              {% endif %}
+                            </td>
+                          {% else %}
+                            <td>Ended</td>
+                          {% endif %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

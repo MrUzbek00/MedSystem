@@ -1,0 +1,29 @@
+
+
+<ul class="list-group list-group-flush">
+    <a class="list-group-item" href="{% url 'dr:dashboard' %}" data-toggle="tooltip" data-placement="bottom" title="Dashboard">
+        <i class="las la-shapes la-lw"></i>
+        <span>dashboard</span>
+    </a>
+    <a class="list-group-item" href="{% url 'fr:appaintments' %}" data-toggle="tooltip" data-placement="bottom" title="Dashboard">
+        <i class="las la-calendar-check"></i>
+        <span>appointments</span>
+    </a>
+    <a class="list-group-item" href="{% url 'fr:patients' %}" data-toggle="tooltip" data-placement="bottom" title="Patients">
+        <i class="las la-user-injured la-lw"></i>
+        <span>patients</span>
+    </a>
+    <a class="list-group-item" href="{% url 'fr:ward_patients' %}" data-toggle="tooltip" data-placement="bottom" title="Patients">
+        <i class="las la-procedures"></i>
+        <span>ward patients</span>
+    </a>
+    <a class="list-group-item" href="{% url 'dr:staticsts' %}" data-toggle="tooltip" data-placement="bottom" title="Patients">
+        <i class="las la-procedures"></i>
+        <span>statistics</span>
+    </a>
+    <a class="list-group-item" href="{% url 'ut:settings' %}" data-toggle="tooltip" data-placement="bottom" title="Settings">
+        <i class="las la-cogs la-lw"></i>
+        <span>settings</span>
+    </a>    
+    <hr class="divider" />
+</ul>

@@ -1,0 +1,106 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>Wards</title>
+{% endblock %}
+
+{% block content %}
+  <main>
+    <div class="side-nav shadow-sm">
+      <ul class="list-group list-group-flush">
+        {% include 'adminstration/admin_side_bar.html' %}
+      </ul>
+    </div>
+    <div class="main-content">
+      <div class="container-fluid">
+        <div class="section"><h5 >Wards</h5></div>
+        <div class="section profile-section">
+          {% include 'partials/_flash_messages.html' %}
+          <form action="{% url 'ut:add_ward' %}" method="post">
+            {% csrf_token %}
+            <div class="card container">
+              <div class="card-header">
+                <h5>Ward Details</h5>
+                <p>
+                  This section contains ward information like departments name, number and a nuber of places etc
+                </p>
+              </div>
+              <div class="card-body">
+                
+                
+                <div class="sub-section col-md-12 col-lg-8">
+                                    
+                  <div class="sub-section-body">
+                                      
+                    <div class="user-details-form ">
+                      <div class="form-row">
+                        <div class="form-group col-sm-4">
+                          <label>Department</label>
+                          <select class="form-control" name="department">
+                            {% for department in departments %}
+                              <option value="{{ department.id }}">{{ department.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group col-sm-4">
+                          <label>Room Number</label>
+                          <input type="text" class="form-control" name="room_number">
+                        </div>
+                        <div class="form-group col-sm-4">
+                          <label>Number of beds</label>
+                          <input type="text" class="form-control" name="number_patients">
+                        </div>
+                        
+                        
+                      </div>
+                      <button class="btn btn-dark-red-f-gr mt-4">
+                        <i class="las la-save"></i>save ward
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          
+          
+        </div>
+        
+      </div>
+      <div class="container-fluid">
+        <div class="section title-section"><h5>Wards List</h5></div>
+        <div class="section specialists-table-view">
+          <table class="table table-hover table-responsive-lg">
+            <thead>
+              <tr>
+                <th>Ward ID</th>
+                <th>Ward number</th>
+                <th>Department Name</th>
+                <th>Places</th>
+                
+                
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for ward in wards %}
+                <tr>
+                  <td>
+                    <span class="ml-2">{{ ward.id }}</span>
+                  </td>
+                  <td>
+                    <span class="ml-2">{{ ward.room_number }}</span>
+                  </td>
+                  <td class="text-muted">{{ ward.department.name }}</td>
+                  <td>{{ ward.number_patients }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      </div>
+  </main>
+{% endblock %}

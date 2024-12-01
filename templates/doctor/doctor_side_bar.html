@@ -1,0 +1,27 @@
+<ul class="list-group list-group-flush">
+
+    {% if head %}
+        <a class="list-group-item" href="{% url 'doc:head_dashboard' %}" data-toggle="tooltip" data-placement="bottom" title="Dashboard"><i class="las la-shapes la-lw"></i>
+            <span>dashboard</span>
+        </a>
+        <a class="list-group-item" href="{% url 'doc:doctors' %}" data-toggle="tooltip" data-placement="bottom" title="Patients"><i class="las la-procedures"></i>
+            <span>doctors</span>
+        </a>
+        <a class="list-group-item" href="{% url 'doc:appointments' %}" data-toggle="tooltip" data-placement="bottom" title="Patients"><i class="las la-procedures"></i>
+            <span>appointments</span>
+        </a>
+    {% else %}
+        <a class="list-group-item" href="{% url 'doc:dashboard' %}" data-toggle="tooltip" data-placement="bottom" title="Dashboard"><i class="las la-shapes la-lw"></i>
+            <span>dashboard</span>
+        </a>
+    {% endif %}
+
+    <a class="list-group-item" href="{% url 'doc:ward_patient' %}" data-toggle="tooltip" data-placement="bottom" title="Patients"><i class="las la-procedures"></i>
+        <span>ward patients</span>
+    </a>
+    <a class="list-group-item" href="{% url 'ut:settings' %}" data-toggle="tooltip" data-placement="bottom" title="Settings"><i class="las la-cogs la-lw"></i>
+        <span>settings</span>
+    </a>
+    <hr class="divider" />
+
+</ul>

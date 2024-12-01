@@ -1,0 +1,110 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}
+<title>New appointment</title>
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="side-nav shadow-sm">
+    <ul class="list-group list-group-flush">
+      {% include 'client/cliend_side_bar.html' %}
+      <hr class="divider" />
+    </ul>
+  </div>
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="section"><h5>A New Appointment</h5></div>
+      <div class="section profile-section">
+
+        {% include 'partials/_flash_messages.html' %}
+        <form action="{% url 'ut:add_appointment' %}" method="post">
+          {% csrf_token %}
+          <div class="card container">
+            <div class="card-header">
+              <h5>Appointment Form</h5>
+              <p>
+                Use this form to make an appointment
+              </p>
+            </div>
+            <div class="card-body">
+
+              <div class="sub-section col-md-12 col-lg-8">
+
+                <div class="sub-section-body">
+                  <div class="user-details-form">
+                    <div class="form-row">
+
+                      <div class="form-group col-sm-6">
+                        <label class="form-text">Patient ID</label>
+                        <input type="text" class="form-group w-100" value="{{ request.user.get_full_name }}" disabled>
+                        <input type="hidden" name="patient" class="form-group" value="{{ request.user.id }}">
+                      </div>
+                      
+                      {% if doctor %}
+                        
+                        <div class="form-group col-sm-6">
+                          <label class="form-text">Doctor ID</label>
+                          <input type="text" class="form-group w-100" value="{{ doctor.get_full_name }}" disabled>
+                          <input type="hidden" name="doctor" class="form-group" value="{{ doctor.id }}">
+                        </div>
+                        
+                      {% else %}
+                      <div class="form-group col-sm-6">
+                        <label>Doctor ID</label>
+                        <select name="doctor" class="form-control">
+                          <option >--------------</option>
+                          {% for doctor in doctors %}
+                            <option value="{{ doctor.id }}">{{ doctor.passport_id }}</option>
+                          {% endfor %}
+
+                        </select>
+                      </div>
+                      
+                      {% endif %}
+
+                      <div class="col-6">
+                        <label >Appo.date</label>
+                        <input name="date" class="btn-dark-red-o p-1 w-100" type="date">
+                      </div>
+
+                      <div class="dropdowns-wrapper col-sm-6">
+                        <label>Type</label>
+                        <select name="type" class="form-control">
+
+                          <option value="ofline">Ofline</option>
+                          <option value="online">Online</option>
+
+                        </select>
+
+                      </div>
+
+                      <div class="dropdowns-wrapper col-sm-6">
+                        <label>Services</label>
+                        <select name="services" class="form-control" multiple>
+
+                          {% for service in services %}
+                          <option value="{{ service.id }}">{{ service.name }}</option>
+                          {% endfor %}
+
+                        </select>
+
+                      </div>
+
+                    </div>
+
+                    <button class="btn btn-dark-red-f-gr mt-4">
+                      <i class="las la-save"></i>make an appointment
+                    </button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
+  {% endblock %}
